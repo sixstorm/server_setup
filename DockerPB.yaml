@@ -16,7 +16,6 @@
 
       - name: PASSWORD
         prompt: "What is the password for {{ CIFS_USER }}?"
-
     tasks:
       - name: Set Time Zone
         timezone:
