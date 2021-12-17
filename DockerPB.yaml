@@ -90,33 +90,43 @@
           
       - name: Create FSTAB entry for Music share 
         mount:
-          state: present
+          state: mounted
           fstype: cifs
-          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" src = "//192.168.50.4/Music" path = "/mnt/music"
+          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" 
+          src: "//192.168.50.4/Music" 
+          path: "/mnt/music"
 
       - name: Create FSTAB entry for eBooks share 
         mount:
-          state: present
+          state: mounted
           fstype: cifs
-          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" src = "//192.168.50.4/Movies/eBooks" path = "/mnt/books"
+          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" 
+          src: "//192.168.50.4/Movies/eBooks" 
+          path: "/mnt/books"
 
       - name: Create FSTAB entry for Comics share 
         mount:
-          state: present
+          state: mounted
           fstype: cifs
-          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" src = "//192.168.50.4/Movies/Comics" path = "/mnt/comics"
+          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" 
+          src: "//192.168.50.4/Movies/Comics" 
+          path: "/mnt/comics"
 
       - name: Create FSTAB entry for YouTube share 
         mount:
-          state: present
+          state: mounted
           fstype: cifs
-          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" src = "//192.168.50.4/YouTube" path = "/mnt/yt"
+          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" 
+          src: "//192.168.50.4/YouTube" 
+          path: "/mnt/yt"
 
       - name: Create FSTAB entry for Docker share 
         mount:
-          state: present
+          state: mounted
           fstype: cifs
-          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" src = "//192.168.50.4/Docker" path = "/mnt/docker"
+          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" 
+          src: "//192.168.50.4/Docker" 
+          path: "/mnt/docker"
 
       - name: Reboot server
         shell: "sleep 1 && reboot"
