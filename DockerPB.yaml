@@ -17,7 +17,7 @@
 
       - name: Install dependencies
         apt:
-          name: "{{ packages }}"
+          name: {{ packages }}
           state: present
         vars:
           packages:
@@ -41,7 +41,7 @@
 
       - name: Install Docker
         apt:
-          name: "{{ docker_packages }}"
+          name: {{ docker_packages }}
           state: present
           vars:
             docker_packages:
