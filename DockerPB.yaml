@@ -15,6 +15,10 @@
         prompt: "What is the password for {{ USER }}?"
 
     tasks:
+      - name: Set Time Zone
+        timezone:
+          name: America/Chicago
+
       - name: Update Server with Apt
         apt:
           update_cache: yes
