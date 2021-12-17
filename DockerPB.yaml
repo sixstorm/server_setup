@@ -1,0 +1,61 @@
+---
+  - name: Setup Docker Server
+    hosts: localhost
+    become: yes
+    gather_facts: false
+    vars:
+      - DOCKER_COMPOSE_VERSION: "1.25.1"
+      - USER: "ascott"
+    
+    tasks:
+      - name: Update Server with Apt
+        apt:
+          update_cache: yes
+          force_apt_get: yes
+          cache_valid_time: 3600
+          autoremove: yes
+
+      - name: Install dependencies
+        apt:
+          name: "{{ packages }}"
+          state: present
+        vars:
+          packages:
+            - apt-transport-https
+            - ca-certificates
+            - curl
+            - software-properties-common
+            - gnupg-agent
+
+      - name: Add an apt signing key for Docker
+        apt_key:
+          url: https://download.docker.com/linux/ubuntu/gpg
+          state: present
+
+      - name: Add apt repo for stable version
+        apt_repository:
+          repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ubuntu_version.stdout }}"
+          state: present
+
+      - name: Placing ascott in Docker group
+        user:
+          name: "ascott"
+          group: "docker"
+          append: "yes"
+
+      - name: Download/Install Docker Compose
+        get_url:
+          url: https://github.com/docker/compose/releases/download/{{ DOCKER_COMPOSE_VERSION }}/docker-compose-Linux-x86_64
+          dest: "/usr/local/bin/docker-compose"
+          mode: 0755
+
+      - name: Install additional apps/packages
+        apt:
+          name: neovim
+          state: present
+          update_cache: no
+
+      - name: Reboot server
+        shell: "sleep 1 && reboot"
+        async: 1
+        poll: 0
