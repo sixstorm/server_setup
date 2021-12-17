@@ -3,13 +3,6 @@
     hosts: localhost
     become: yes
     gather_facts: no
-    vars:
-      - DOCKER_COMPOSE_VERSION: "1.25.1"
-      - LOCAL_USER: "ascott"
-      - DOCKER_PACKAGES:
-              - docker-ce
-              - docker-ce-cli
-              - containerd.io
     vars_prompt:
       - name: CU
         prompt: "What is the username for the CIFS share?"
@@ -17,6 +10,13 @@
       - name: PASSWORD
         prompt: "What is the password for {{ CU }}?"
         private: yes
+    vars:
+      - DOCKER_COMPOSE_VERSION: "1.25.1"
+      - LOCAL_USER: "ascott"
+      - DOCKER_PACKAGES:
+              - docker-ce
+              - docker-ce-cli
+              - containerd.io
     tasks:
       - name: Set Time Zone
         timezone:
