@@ -2,7 +2,7 @@
   - name: Setup Docker Server
     hosts: localhost
     become: yes
-    gather_facts: true
+    gather_facts: no
     vars:
       - DOCKER_COMPOSE_VERSION: "1.25.1"
       - LOCAL_USER: "ascott"
@@ -13,9 +13,10 @@
     vars_prompt:
       - name: CIFS_USER
         prompt: "What is the username for the CIFS share?"
-
+        private: no
       - name: PASSWORD
         prompt: "What is the password for {{ CIFS_USER }}?"
+        private: yes
     tasks:
       - name: Set Time Zone
         timezone:
