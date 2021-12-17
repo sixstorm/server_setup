@@ -2,7 +2,7 @@
   - name: Setup Docker Server
     hosts: localhost
     become: yes
-    gather_facts: false
+    gather_facts: true
     vars:
       - DOCKER_COMPOSE_VERSION: "1.25.1"
       - USER: "ascott"
