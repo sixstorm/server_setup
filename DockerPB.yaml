@@ -3,13 +3,14 @@
     become: yes
     gather_facts: false
     vars_prompt:
-      - name: CU
-        prompt: "What is the username for the CIFS share?"
-        private: no
-      - name: PASSWORD
-        prompt: "What is the password for {{ CU }}?"
-        private: yes
+      #      - name: CU
+      #  prompt: "What is the username for the CIFS share?"
+      #  private: no
+    - name: PASSWORD
+      prompt: "What is the password for {{ CU }}?"
+      private: yes
     vars:
+      - CU: "sixst"
       - DOCKER_COMPOSE_VERSION: "1.25.1"
       - LOCAL_USER: "ascott"
       - DOCKER_PACKAGES:
