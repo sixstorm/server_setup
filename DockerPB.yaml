@@ -11,10 +11,10 @@
               - docker-ce-cli
               - containerd.io
     vars_prompt:
-        prompt: "What is the username for the CIFS share?"
       - name: CIFS_USER
-        prompt: "What is the password for {{ CIFS_USER }}?"
+        prompt: "What is the username for the CIFS share?"
       - name: PASSWORD
+        prompt: "What is the password for {{ CIFS_USER }}?"
 
     tasks:
       - name: Set Time Zone
