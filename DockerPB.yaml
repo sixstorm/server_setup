@@ -14,7 +14,7 @@
       - name: PASSWORD
         prompt: "What is the password for  {{ USER }}?"
 
-    - tasks:
+    tasks:
       - name: Update Server with Apt
         apt:
           update_cache: yes
