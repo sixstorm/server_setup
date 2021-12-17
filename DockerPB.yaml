@@ -93,7 +93,7 @@
           content:
             username={{ CU }}
             password={{ PASSWORD }}
-          dest: /home/ascott/.credential
+          dest: /home/{{ LOCAL_USER }}/.credential
           mode: 0600
           
       - name: Create FSTAB entry for Music share 
@@ -103,7 +103,6 @@
           opts: "username={{ CU }},password={{ PASSWORD }}" 
           src: "//192.168.50.4/Music" 
           path: "/mnt/music"
-        become: true
 
       - name: Create FSTAB entry for YouTube share 
         mount:
