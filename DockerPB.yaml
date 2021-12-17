@@ -13,6 +13,7 @@
     vars_prompt:
       - name: CIFS_USER
         prompt: "What is the username for the CIFS share?"
+
       - name: PASSWORD
         prompt: "What is the password for {{ CIFS_USER }}?"
 
@@ -89,7 +90,7 @@
       - name: Create credential file (FSTAB)
         copy:
           content:
-            username={{ USER }}
+            username={{ CIFS_USER }}
             password={{ PASSWORD }}
           dest: /home/ascott/.credential
           mode: 0600
