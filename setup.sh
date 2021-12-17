@@ -4,5 +4,5 @@
 echo "Installing Ansible"
 sudo apt install ansible -y
 
-# Pull dotfiles and scripts
-git pull 
+# Git Clone dotfiles and scripts
+# git clone https://github.com/sixstorm/server_setup.git 
