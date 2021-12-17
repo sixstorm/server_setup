@@ -10,8 +10,12 @@
               - docker-ce
               - docker-ce-cli
               - containerd.io
+    vars_prompt:
+      - name: PASSWORD
+        prompt: "What is the password for  {{ USER }}?"
+          
     
-    tasks:
+    - tasks:
       - name: Update Server with Apt
         apt:
           update_cache: yes
@@ -65,6 +69,65 @@
           name: neovim
           state: present
           update_cache: no
+
+      - name: Create folders in MNT
+        file:
+          path: "/mnt/{{ item }}"
+          state: directory
+        loop:
+          - "docker"
+          - "music"
+          - "yt"
+          - "books"
+          - "comics"
+
+      - name: Create credential file (FSTAB)
+        copy:
+          content:
+            username=USER
+            password=PASSWORD
+          dest: /home/ascott/.credential
+          mode: 0600
+          
+      - name: Create FSTAB entry for Music share 
+        mount:
+          state: present
+          fstype: cifs
+          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user"
+          src = "//192.168.50.4/Music"
+          path = "/mnt/music"
+
+      - name: Create FSTAB entry for eBooks share 
+        mount:
+          state: present
+          fstype: cifs
+          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user"
+          src = "//192.168.50.4/Movies/eBooks"
+          path = "/mnt/books"
+
+      - name: Create FSTAB entry for Comics share 
+        mount:
+          state: present
+          fstype: cifs
+          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user"
+          src = "//192.168.50.4/Movies/Comics"
+          path = "/mnt/comics"
+
+      - name: Create FSTAB entry for YouTube share 
+        mount:
+          state: present
+          fstype: cifs
+          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user"
+          src = "//192.168.50.4/YouTube"
+          path = "/mnt/yt"
+
+      - name: Create FSTAB entry for Docker share 
+        mount:
+          state: present
+          fstype: cifs
+          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user"
+          src = "//192.168.50.4/Docker"
+          path = "/mnt/docker"
 
       - name: Reboot server
         shell: "sleep 1 && reboot"
