@@ -7,7 +7,7 @@
       prompt: "What is the password for {{ CU }}?"
       private: yes
     vars:
-      - CU: "sixst"
+      # - CU: "sixst"
       - DOCKER_COMPOSE_VERSION: "1.25.1"
       - LOCAL_USER: "ascott"
       - DOCKER_PACKAGES:
@@ -85,9 +85,9 @@
           - "yt"
           - "books"
 
-      - vars_prompt:
-        name: CU
-        prompt: "What is the username for the CIFS share?"
+      - pause:
+          prompt: "What is the username for the CIFS share?"
+        register: CU
 
       - name: Create credential file (FSTAB)
         copy:
