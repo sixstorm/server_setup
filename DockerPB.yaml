@@ -3,9 +3,6 @@
     become: yes
     gather_facts: false
     vars_prompt:
-      #      - name: CU
-      #  prompt: "What is the username for the CIFS share?"
-      #  private: no
     - name: PASSWORD
       prompt: "What is the password for {{ CU }}?"
       private: yes
@@ -87,6 +84,10 @@
           - "music"
           - "yt"
           - "books"
+
+      - vars_prompt:
+        name: CU
+        prompt: "What is the username for the CIFS share?"
 
       - name: Create credential file (FSTAB)
         copy:
