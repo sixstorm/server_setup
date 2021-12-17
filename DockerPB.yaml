@@ -2,6 +2,27 @@
   - hosts: localhost
     become: yes
     gather_facts: false
+    pre_tasks:
+      - pause:
+        prompt: "Enter your local username:"
+        register: prompt
+        no_log: yes
+        run_once: yes
+      - set_fact:
+          LOCAL_USER: "{{prompt.user_input}}"
+        no_log: yes
+        run_once: yes
+
+      - pause:
+        prompt: "Enter your CIFS share username:"
+        register: prompt
+        no_log: yes
+        run_once: yes
+      - set_fact:
+          CU: "{{prompt.user_input}}"
+        no_log: yes
+        run_once: yes
+
     vars_prompt:
     - name: PASSWORD
       prompt: "What is the password for {{ CU }}?"
@@ -9,7 +30,7 @@
     vars:
       # - CU: "sixst"
       - DOCKER_COMPOSE_VERSION: "1.25.1"
-      - LOCAL_USER: "ascott"
+        # - LOCAL_USER: "ascott"
       - DOCKER_PACKAGES:
               - docker-ce
               - docker-ce-cli
