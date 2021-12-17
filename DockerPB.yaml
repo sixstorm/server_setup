@@ -35,6 +35,7 @@
             - gnupg-agent
             - python3-pip
             - python3-setuptools
+            - cifs-utils
 
       - name: Add an apt signing key for Docker
         apt_key:
@@ -95,6 +96,7 @@
           opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" 
           src: "//192.168.50.4/Music" 
           path: "/mnt/music"
+        become: yes
 
       - name: Create FSTAB entry for eBooks share 
         mount:
