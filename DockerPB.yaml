@@ -34,7 +34,7 @@
 
       - name: Add apt repo for stable version
         apt_repository:
-          repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ubuntu_version.stdout }}"
+          repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
           state: present
 
       - name: Placing ascott in Docker group
