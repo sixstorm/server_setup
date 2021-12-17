@@ -13,8 +13,7 @@
     vars_prompt:
       - name: PASSWORD
         prompt: "What is the password for  {{ USER }}?"
-          
-    
+
     - tasks:
       - name: Update Server with Apt
         apt:
