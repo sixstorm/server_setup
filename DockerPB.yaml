@@ -99,7 +99,7 @@
         mount:
           state: mounted
           fstype: cifs
-          opts: "username={{ LOCAL_USER }},password={{ PASSWORD }}" 
+          opts: "username={{ CU }},password={{ PASSWORD }}" 
           src: "//192.168.50.4/Music" 
           path: "/mnt/music"
         become: true
@@ -108,7 +108,7 @@
         mount:
           state: mounted
           fstype: cifs
-          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" 
+          opts: "username={{ CU }},password={{ PASSWORD }}" 
           src: "//192.168.50.4/YouTube" 
           path: "/mnt/yt"
 
@@ -116,7 +116,7 @@
         mount:
           state: mounted
           fstype: cifs
-          opts: "credentials=/home/ascott/.credential,file_mode=0755,dir_mode=0755,user" 
+          opts: "username={{ CU }},password={{ PASSWORD }}" 
           src: "//192.168.50.4/Docker" 
           path: "/mnt/docker"
 
