@@ -5,7 +5,7 @@
     gather_facts: true
     vars:
       - DOCKER_COMPOSE_VERSION: "1.25.1"
-      - USER: "ascott"
+      - LOCAL_USER: "ascott"
       - DOCKER_PACKAGES:
               - docker-ce
               - docker-ce-cli
@@ -99,7 +99,7 @@
         mount:
           state: mounted
           fstype: cifs
-          opts: "username={{ USER }},password={{ PASSWORD }}" 
+          opts: "username={{ LOCAL_USER }},password={{ PASSWORD }}" 
           src: "//192.168.50.4/Music" 
           path: "/mnt/music"
         become: true
