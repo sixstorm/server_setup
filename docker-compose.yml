@@ -2,31 +2,14 @@
 version: "3"
 services:
   watchtower:
-    container_name: watchtower2
+    container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     image: containrrr/watchtower
 
-  ubooquity:
-    image: ghcr.io/linuxserver/ubooquity
-    container_name: ubooquity2
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Chicago/America
-    volumes:
-      - /mnt/docker/ubooquity/config:/config
-      - /mnt/comics:/comics
-      - /mnt/books:/books
-      - /mnt/books:/files
-    ports:
-      - 2202:2202
-      - 2203:2203
-    restart: unless-stopped
-
   metube:
     image: alexta69/metube
-    container_name: metube2
+    container_name: metube
     restart: unless-stopped
     environment:
       - PUID=1000
@@ -49,51 +32,17 @@ services:
       ND_LOGLEVEL: info  
       ND_BASEURL: ""
     volumes:
-      - "~/navidrome:/data"
+      - "/mnt/navidrome:/data"
       - "/mnt/music:/music:ro"
 
   flame:
     image: pawelmalak/flame:latest
     container_name: flame
     volumes:
-      - /home/ascott/flame:/app/data
+      - /mnt/docker/flame:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 5005:5005
-    restart: unless-stopped
-
-  bookstack:
-    image: ghcr.io/linuxserver/bookstack
-    container_name: bookstack
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - APP_URL=
-      - DB_HOST=bookstack_db
-      - DB_USER=bookstack
-      - DB_PASS=<yourdbpass>
-      - DB_DATABASE=bookstackapp
-    volumes:
-      - /mnt/docker/bookstack:/config
-    ports:
-      - 6875:80
-    restart: unless-stopped
-    depends_on:
-      - bookstack_db
-
-  bookstack_db:
-    image: ghcr.io/linuxserver/mariadb
-    container_name: bookstack_db
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - MYSQL_ROOT_PASSWORD=<yourdbpass>
-      - TZ=America/Chicago
-      - MYSQL_DATABASE=bookstackapp
-      - MYSQL_USER=bookstack
-      - MYSQL_PASSWORD=<yourdbpass>
-    volumes:
-      - /mnt/docker/bookstack/db:/config
     restart: unless-stopped
 
   homeassistant:
@@ -105,7 +54,7 @@ services:
       - PGID=1000
       - TZ=Chicago/America
     volumes:
-      - /home/ascott/ha/config:/config
+      - /mnt/docker/ha/config:/config
     ports:
       - 8123:8123 #optional
     restart: unless-stopped
@@ -118,7 +67,7 @@ services:
           - PGID=1000
           - TZ=Chicago/America
       volumes:
-          - /home/ascott/linkding:/etc/linkding/data
+          - /mnt/docker/linkding:/etc/linkding/data
       ports:
           - 9090:9090
       restart: always
@@ -131,8 +80,8 @@ services:
           - PGID=1000
           - TZ=Chicago/America
       volumes:
-          - /home/ascott/wikijs/config:/config
-          - /home/ascott/wikijs/data:/data
+          - /mnt/docker/wikijs/config:/config
+          - /mnt/docker/wikijs/data:/data
       ports:
           - 3000:3000
       restart: unless-stopped
