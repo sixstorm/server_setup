@@ -32,7 +32,7 @@ services:
       ND_LOGLEVEL: info  
       ND_BASEURL: ""
     volumes:
-      - "/mnt/navidrome:/data"
+      - "/mnt/docker/navidrome:/data"
       - "/mnt/music:/music:ro"
 
   flame:
