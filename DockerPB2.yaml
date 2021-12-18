@@ -5,30 +5,27 @@
     vars_prompt:
       - name: "LOCAL_USER"
         private: no
-        prompt: "Enter your local username:"
+        prompt: "Enter the local user name"
 
-      - name: "CU"
+      - name: "CIFS_USER"
         private: no
-        prompt: "Enter your CIFS share username:"
+        prompt: "Enter your CIFS username"
 
-      - name: PASSWORD
-        prompt: "What is the password for {{ CU }}?"
+      - name: "PASSWORD"
+        prompt: "What is your password?"
         private: yes
     vars:
-      # - CU: "sixst"
       - DOCKER_COMPOSE_VERSION: "1.25.1"
-        # - LOCAL_USER: "ascott"
       - DOCKER_PACKAGES:
-              - docker-ce
-              - docker-ce-cli
-              - containerd.io
-
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
     tasks:
       - name: Set Time Zone
         timezone:
           name: America/Chicago
 
-      - name: Update Server with Apt
+      - name: Update Server (APT)
         apt:
           update_cache: yes
           upgrade: dist
@@ -36,7 +33,7 @@
           cache_valid_time: 3600
           autoremove: yes
 
-      - name: Install dependencies
+      - name: Install Dependencies
         apt:
           name: "{{ packages }}"
           state: present
@@ -50,13 +47,14 @@
             - python3-pip
             - python3-setuptools
             - cifs-utils
+            - neovim
 
-      - name: Add an apt signing key for Docker
+      - name: Add an APT signing key for Docker
         apt_key:
           url: https://download.docker.com/linux/ubuntu/gpg
           state: present
 
-      - name: Add apt repo for stable version
+      - name: Add APT repo for stable version
         apt_repository:
           repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
           state: present
@@ -66,9 +64,9 @@
           name: "{{ DOCKER_PACKAGES }}"
           state: present
 
-      - name: Placing ascott in Docker group
+      - name: Placing user in Docker group
         user:
-          name: "ascott"
+          name: "{{ LOCAL_USER }}"
           group: "docker"
           append: "yes"
 
@@ -78,13 +76,7 @@
           dest: "/usr/local/bin/docker-compose"
           mode: 0755
 
-      - name: Install additional apps/packages
-        apt:
-          name: neovim
-          state: present
-          update_cache: no
-
-      - name: Create folders in MNT
+      - name: Create Folders in MNT
         file:
           path: "/mnt/{{ item }}"
           state: directory
@@ -92,45 +84,28 @@
           - "docker"
           - "music"
           - "yt"
-          - "books"
-
-      - pause:
-          prompt: "What is the username for the CIFS share?"
-        register: CU
-
-      - name: Create credential file (FSTAB)
+        
+      - name: Create credential file for FSTAB
         copy:
           content:
             username={{ CU }}
             password={{ PASSWORD }}
           dest: /home/{{ LOCAL_USER }}/.credential
           mode: 0600
-          
-      - name: Create FSTAB entry for Music share 
+
+      - name: Create FSTAB entries
         mount:
           state: mounted
           fstype: cifs
-          opts: "username={{ CU }},password={{ PASSWORD }}" 
-          src: "//192.168.50.4/Music" 
-          path: "/mnt/music"
+          opts: "username={{ CU }},password={{ PASSWORD }}"
+          src: "//192.168.50.4/{{ item }}"
+          path: "/mnt/{{ item }}"
+          loop:
+            - "music"
+            - "docker"
+            - "yt"
 
-      - name: Create FSTAB entry for YouTube share 
-        mount:
-          state: mounted
-          fstype: cifs
-          opts: "username={{ CU }},password={{ PASSWORD }}" 
-          src: "//192.168.50.4/YouTube" 
-          path: "/mnt/yt"
-
-      - name: Create FSTAB entry for Docker share 
-        mount:
-          state: mounted
-          fstype: cifs
-          opts: "username={{ CU }},password={{ PASSWORD }}" 
-          src: "//192.168.50.4/Docker" 
-          path: "/mnt/docker"
-
-      - name: Reboot server
+      - name: Reboot Server
         shell: "sleep 1 && reboot"
         async: 1
         poll: 0
