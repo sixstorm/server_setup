@@ -88,7 +88,7 @@
       - name: Create credential file for FSTAB
         copy:
           content:
-            username={{ CU }}
+            username={{ CIFS_USER }}
             password={{ PASSWORD }}
           dest: /home/{{ LOCAL_USER }}/.credential
           mode: 0600
@@ -97,7 +97,7 @@
         mount:
           state: mounted
           fstype: cifs
-          opts: "username={{ CU }},password={{ PASSWORD }}"
+          opts: "username={{ CIFS_USER }},password={{ PASSWORD }}"
           src: "//192.168.50.4/{{ item }}"
           path: "/mnt/{{ item }}"
           loop:
