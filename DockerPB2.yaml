@@ -93,17 +93,29 @@
           dest: /home/{{ LOCAL_USER }}/.credential
           mode: 0600
 
-      - name: Create FSTAB entries
+      - name: Create FSTAB entry for Music
         mount:
           state: mounted
           fstype: cifs
           opts: "username={{ CIFS_USER }},password={{ PASSWORD }}"
-          src: "//192.168.50.4/{{ item }}"
-          path: "/mnt/{{ item }}"
-          loop:
-            - "music"
-            - "docker"
-            - "yt"
+          src: "//192.168.50.4/music"
+          path: "/mnt/music"
+
+      - name: Create FSTAB entry for Docker
+        mount:
+          state: mounted
+          fstype: cifs
+          opts: "username={{ CIFS_USER }},password={{ PASSWORD }}"
+          src: "//192.168.50.4/docker"
+          path: "/mnt/docker"
+
+      - name: Create FSTAB entry for YT
+        mount:
+          state: mounted
+          fstype: cifs
+          opts: "username={{ CIFS_USER }},password={{ PASSWORD }}"
+          src: "//192.168.50.4/youtube"
+          path: "/mnt/yt"
 
       - name: Reboot Server
         shell: "sleep 1 && reboot"
